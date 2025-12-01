@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import pool from '../../../../../lib/db';
+import { Pool } from 'pg';
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
 
 export async function GET() {
   try {
@@ -11,7 +16,7 @@ export async function GET() {
       ORDER BY created_at DESC 
       LIMIT 1
     `;
-    
+
     const result = await pool.query(query);
 
     if (result.rows.length > 0) {
