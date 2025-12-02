@@ -1,12 +1,13 @@
 "use client"
 
 import { useEffect, useState } from 'react';
-import sdk, { type Context } from '@farcaster/frame-sdk';
+import sdk from '@farcaster/frame-sdk';
 import LamboLottery from '@/components/LamboLottery';
 
 export default function Home() {
     const [isSDKLoaded, setIsSDKLoaded] = useState(false);
-    const [context, setContext] = useState<Context.FrameContext>();
+    const [context, setContext] = useState<any>();
+
 
     useEffect(() => {
         const load = async () => {
