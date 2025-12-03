@@ -13,6 +13,20 @@ export default function Home() {
         const load = async () => {
             setContext(await sdk.context);
             sdk.actions.ready();
+
+            // Prompt user to add miniapp after SDK is ready
+            const hasPrompted = localStorage.getItem('lambo-lotto-prompted');
+            if (!hasPrompted) {
+                setTimeout(async () => {
+                    try {
+                        await sdk.actions.addMiniApp();
+                        localStorage.setItem('lambo-lotto-prompted', 'true');
+                    } catch (error) {
+                        console.log('User declined to add miniapp:', error);
+                        localStorage.setItem('lambo-lotto-prompted', 'true');
+                    }
+                }, 2000); // Wait 2 seconds after SDK is ready
+            }
         };
         if (sdk && !isSDKLoaded) {
             setIsSDKLoaded(true);
