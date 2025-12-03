@@ -8,14 +8,14 @@ export const metadata: Metadata = {
     other: {
         "fc:frame": JSON.stringify({
             version: "next",
-            imageUrl: "https://lambo-lotto.vercel.app/og-image.png",
+            imageUrl: "https://lambo-lotto-frame.vercel.app/og-image.png",
             button: {
                 title: "Play Lambo Lotto",
                 action: {
                     type: "launch_frame",
                     name: "Lambo Lotto",
-                    url: "https://lambo-lotto.vercel.app",
-                    splashImageUrl: "https://lambo-lotto.vercel.app/splash.png",
+                    url: "https://lambo-lotto-frame.vercel.app",
+                    splashImageUrl: "https://lambo-lotto-frame.vercel.app/splash.png",
                     splashBackgroundColor: "#000000"
                 }
             }

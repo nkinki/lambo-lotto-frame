@@ -7,17 +7,17 @@
     "miniapp": {
         "version": "1",
         "name": "Lambo Lotto",
-        "iconUrl": "https://lambo-lotto.vercel.app/icon.png",
+        "iconUrl": "https://lambo-lotto-frame.vercel.app/icon.png",
         "subtitle": "Win big with Lambo Lotto",
         "description": "Buy a ticket, pick your numbers, and win the jackpot! The most exciting lottery on Farcaster.",
         "primaryCategory": "games",
         "screenshotUrls": [
-            "https://lambo-lotto.vercel.app/screenshot1.png",
-            "https://lambo-lotto.vercel.app/screenshot2.png"
+            "https://lambo-lotto-frame.vercel.app/screenshot1.png",
+            "https://lambo-lotto-frame.vercel.app/screenshot2.png"
         ],
-        "imageUrl": "https://lambo-lotto.vercel.app/og-image.png",
-        "heroImageUrl": "https://lambo-lotto.vercel.app/hero.png",
-        "splashImageUrl": "https://lambo-lotto.vercel.app/splash.png",
+        "imageUrl": "https://lambo-lotto-frame.vercel.app/og-image.png",
+        "heroImageUrl": "https://lambo-lotto-frame.vercel.app/hero.png",
+        "splashImageUrl": "https://lambo-lotto-frame.vercel.app/splash.png",
         "splashBackgroundColor": "#000000",
         "tags": [
             "lottery",
@@ -30,8 +30,8 @@
         "buttonTitle": "Play Lambo Lotto",
         "ogTitle": "Lambo Lotto",
         "ogDescription": "Buy a ticket, win the jackpot!",
-        "ogImageUrl": "https://lambo-lotto.vercel.app/og-image.png",
-        "castShareUrl": "https://lambo-lotto.vercel.app",
-        "homeUrl": "https://lambo-lotto.vercel.app"
+        "ogImageUrl": "https://lambo-lotto-frame.vercel.app/og-image.png",
+        "castShareUrl": "https://lambo-lotto-frame.vercel.app",
+        "homeUrl": "https://lambo-lotto-frame.vercel.app"
     }
 }
