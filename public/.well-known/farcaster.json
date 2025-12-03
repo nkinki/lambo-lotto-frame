@@ -1,3 +1,14 @@
+{
+    "accountAssociation": {
+        "header": "eyJmaWQiOjQzOTAxNSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDIyMWJGNzk4MkIzRjAxMDhiNjMxMmRjNzk5M0NGM0ZmNWViOTI2MDYifQ",
+        "payload": "eyJkb21haW4iOiJsYW1iby1sb3R0by1mcmFtZS52ZXJjZWwuYXBwIn0",
+        "signature": "UTqiYEWacsSYNpD1MdM603N7+wEpfWWVxk9yyKwU65hHBPtHiTUsMqhRdwePAhrIIkCwgNEAfJnouu8gGjsvRhw="
+    },
+    "miniapp": {
+        "version": "1",
+        "name": "Lambo Lotto",
+        "iconUrl": "https://lambo-lotto-frame.vercel.app/icon.png",
+        "subtitle": "Win big with Lambo Lotto",
         "description": "Buy a ticket, pick your numbers, and win the jackpot! The most exciting lottery on Farcaster.",
         "primaryCategory": "games",
         "screenshotUrls": [
