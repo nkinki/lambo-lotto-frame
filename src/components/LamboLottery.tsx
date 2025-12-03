@@ -6,6 +6,7 @@ import { useAccount, useWaitForTransactionReceipt, useReadContract, useWriteCont
 import { type Hash } from 'viem';
 import { LOTTO_PAYMENT_ROUTER_ADDRESS, LOTTO_PAYMENT_ROUTER_ABI, TICKET_PRICE } from '@/abis/LottoPaymentRouter';
 import { CHESS_TOKEN_ADDRESS, CHESS_TOKEN_ABI } from '@/abis/chessToken';
+import { sdk } from '@farcaster/miniapp-sdk';
 
 // --- Interface definíciók ---
 interface LotteryRound { id: number; round_number: number; start_date: string; end_date: string; draw_date: string; prize_pool: number; status: string; winner_fid?: number; winner_number?: number; total_tickets_sold: number; }
