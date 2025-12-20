@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react";
-import { FiDollarSign, FiClock, FiUsers, FiTrendingUp, FiZap } from "react-icons/fi";
+import { FiDollarSign, FiClock, FiUsers, FiTrendingUp, FiZap, FiGift } from "react-icons/fi";
 import { useAccount, useWaitForTransactionReceipt, useReadContract, useWriteContract } from 'wagmi';
 import { type Hash } from 'viem';
 import { LOTTO_PAYMENT_ROUTER_ADDRESS, LOTTO_PAYMENT_ROUTER_ABI, TICKET_PRICE } from '@/abis/LottoPaymentRouter';
