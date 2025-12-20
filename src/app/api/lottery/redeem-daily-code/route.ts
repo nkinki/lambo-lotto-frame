@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
             [fid, code]
         );
         if (usageResult.rows.length > 0) {
-            return NextResponse.json({ error: 'You have already redeemed this daily code.' }, { status: 400 });
+            return NextResponse.json({ error: "You've already redeemed this code! 🌟 Grab a regular ticket to increase your jackpot chances!" }, { status: 400 });
         }
 
         // 2.5. Check total uses for this code (Limit to 3)
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
         );
         const totalUsageCount = parseInt(totalUsageResult.rows[0].count);
         if (totalUsageCount >= 3) {
-            return NextResponse.json({ error: 'This daily code has already been fully redeemed (max 3 users).' }, { status: 400 });
+            return NextResponse.json({ error: "Today's free tickets have all been claimed! 🏎️ Don't miss your chance at the jackpot—grab a ticket now and join the race!" }, { status: 400 });
         }
 
         // 3. Check if user used ANY code today
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
             [fid]
         );
         if (todayResult.rows.length > 0) {
-            return NextResponse.json({ error: 'You have already redeemed a code today. Come back tomorrow!' }, { status: 400 });
+            return NextResponse.json({ error: "You've already claimed a free ticket today! 🎁 Come back tomorrow, or grab another one now to boost your odds!" }, { status: 400 });
         }
 
         // 4. Check if subscribed to notifications
