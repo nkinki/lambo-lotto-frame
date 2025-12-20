@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     const client = await pool.connect();
     try {
         const body = await request.json();
-        const { code, fid, notificationDetails } = body;
+        const { code, fid, address, notificationDetails } = body;
 
         if (!code || !fid) {
             return NextResponse.json({ error: 'Missing code or fid' }, { status: 400 });
@@ -124,9 +124,9 @@ export async function POST(request: NextRequest) {
         try {
             for (const num of selected) {
                 await client.query(
-                    `INSERT INTO lottery_tickets (draw_id, player_fid, "number", purchased_at, purchase_price, is_active)
-                 VALUES ($1, $2, $3, NOW(), 0, TRUE)`,
-                    [roundId, fid, num]
+                    `INSERT INTO lottery_tickets (draw_id, player_fid, player_address, "number", purchased_at, purchase_price, is_active)
+                 VALUES ($1, $2, $3, $4, NOW(), 0, TRUE)`,
+                    [roundId, fid, address || '0x0000000000000000000000000000000000000000', num]
                 );
             }
             await client.query(

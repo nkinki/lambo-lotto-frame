@@ -339,6 +339,7 @@ export default function LamboLottery({ isOpen, onClose, userFid, onPurchaseSucce
         body: JSON.stringify({
           code: dailyCode,
           fid: userFid,
+          address: address,
           notificationDetails: notificationDetails
         }),
       });
