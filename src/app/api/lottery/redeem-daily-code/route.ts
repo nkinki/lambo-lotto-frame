@@ -10,10 +10,21 @@ export async function POST(request: NextRequest) {
     const client = await pool.connect();
     try {
         const body = await request.json();
-        const { code, fid } = body;
+        const { code, fid, notificationDetails } = body;
 
         if (!code || !fid) {
             return NextResponse.json({ error: 'Missing code or fid' }, { status: 400 });
+        }
+
+        // 0. Sync notification token if provided (Fix for missing FIDs from webhooks)
+        if (notificationDetails && notificationDetails.token) {
+            await client.query(
+                `INSERT INTO notification_tokens (token, url, fid, app_id, created_at)
+                 VALUES ($1, $2, $3, $4, NOW())
+                 ON CONFLICT (token) DO UPDATE 
+                 SET fid = EXCLUDED.fid, app_id = EXCLUDED.app_id`,
+                [notificationDetails.token, notificationDetails.url, fid, 'lambo-lotto']
+            );
         }
 
         // 1. Validate Code

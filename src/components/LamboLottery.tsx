@@ -329,10 +329,18 @@ export default function LamboLottery({ isOpen, onClose, userFid, onPurchaseSucce
     setIsRedeeming(true);
     setRedeemStatus(null);
     try {
+      // Get notification details from SDK context to sync subscription if needed
+      const context = await (sdk as any).context;
+      const notificationDetails = context?.client?.notificationDetails;
+
       const response = await fetch('/api/lottery/redeem-daily-code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: dailyCode, fid: userFid }),
+        body: JSON.stringify({
+          code: dailyCode,
+          fid: userFid,
+          notificationDetails: notificationDetails
+        }),
       });
       const data = await response.json();
       if (response.ok) {
