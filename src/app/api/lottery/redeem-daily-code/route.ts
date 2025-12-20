@@ -34,6 +34,16 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'You have already redeemed this daily code.' }, { status: 400 });
         }
 
+        // 2.5. Check total uses for this code (Limit to 3)
+        const totalUsageResult = await client.query(
+            'SELECT COUNT(*) FROM lotto_daily_code_usages WHERE code = $1',
+            [code]
+        );
+        const totalUsageCount = parseInt(totalUsageResult.rows[0].count);
+        if (totalUsageCount >= 3) {
+            return NextResponse.json({ error: 'This daily code has already been fully redeemed (max 3 users).' }, { status: 400 });
+        }
+
         // 3. Check if user used ANY code today
         const todayResult = await client.query(
             'SELECT * FROM lotto_daily_code_usages WHERE fid = $1 AND used_at > CURRENT_DATE',
@@ -73,11 +83,9 @@ export async function POST(request: NextRequest) {
         if (currentTickets >= 10) {
             return NextResponse.json({ error: 'You already have the maximum amount of tickets (10) for this round.' }, { status: 400 });
         }
-        const ticketsToGrant = Math.min(3, 10 - currentTickets);
 
-        if (ticketsToGrant <= 0) {
-            return NextResponse.json({ error: 'You already have 10 tickets in this round.' }, { status: 400 });
-        }
+        // JAVÍTVA: Csak 1 jegy jár, de csak ha van még hely a 10-ben
+        const ticketsToGrant = 1;
 
         // 7. Find available numbers (1-100)
         const takenResult = await client.query(
@@ -119,7 +127,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({
                 success: true,
                 grantedTickets: selected,
-                message: `Success! You received ${ticketsToGrant} free tickets: ${selected.join(', ')}`
+                message: `Success! You received 1 free ticket: ${selected.join(', ')}`
             });
         } catch (e) {
             await client.query('ROLLBACK');

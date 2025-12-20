@@ -402,7 +402,7 @@ export default function LamboLottery({ isOpen, onClose, userFid, onPurchaseSucce
                   <FiGift /> Daily Free Numbers
                 </h3>
                 <p className="text-xs text-gray-400 text-center mb-4">
-                  Enter today's code to get 3 free tickets! (Must be subscribed to notifications)
+                  Enter today's code to get 1 free ticket! (Limit: first 3 fast users)
                 </p>
                 <div className="flex gap-2">
                   <input
