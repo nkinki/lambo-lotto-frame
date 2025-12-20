@@ -32,6 +32,7 @@
         "ogDescription": "Buy a ticket, win the jackpot!",
         "ogImageUrl": "https://lambo-lotto-frame.vercel.app/og-image.png",
         "castShareUrl": "https://lambo-lotto-frame.vercel.app",
-        "homeUrl": "https://lambo-lotto-frame.vercel.app"
+        "homeUrl": "https://lambo-lotto-frame.vercel.app",
+        "webhookUrl": "https://lambo-lotto-frame.vercel.app/api/webhook"
     }
 }

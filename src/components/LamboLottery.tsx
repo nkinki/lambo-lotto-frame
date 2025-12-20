@@ -54,6 +54,9 @@ export default function LamboLottery({ isOpen, onClose, userFid, onPurchaseSucce
   const [recentRounds, setRecentRounds] = useState<RecentRound[]>([]);
   const [userWinnings, setUserWinnings] = useState<UserWinning[]>([]);
   const [stats, setStats] = useState<LotteryStats | null>(null);
+  const [dailyCode, setDailyCode] = useState("");
+  const [redeemStatus, setRedeemStatus] = useState<{ message: string; isError: boolean } | null>(null);
+  const [isRedeeming, setIsRedeeming] = useState(false);
 
   const [step, setStep] = useState<PurchaseStep>(PurchaseStep.Idle);
   const [approveTxHash, setApproveTxHash] = useState<Hash | undefined>();
@@ -320,6 +323,34 @@ export default function LamboLottery({ isOpen, onClose, userFid, onPurchaseSucce
     if (selectedNumbers.includes(number)) { setSelectedNumbers(selectedNumbers.filter(n => n !== number)); }
     else if (userTickets.length + selectedNumbers.length < 10) { setSelectedNumbers([...selectedNumbers, number]); }
   };
+
+  const handleRedeemCode = async () => {
+    if (!dailyCode || !userFid) return;
+    setIsRedeeming(true);
+    setRedeemStatus(null);
+    try {
+      const response = await fetch('/api/lottery/redeem-daily-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: dailyCode, fid: userFid }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setRedeemStatus({ message: data.message, isError: false });
+        setDailyCode("");
+        fetchLotteryData();
+      } else {
+        setRedeemStatus({ message: data.error, isError: true });
+        if (data.needsSubscription) {
+          try { await sdk.actions.addMiniApp(); } catch (e) { }
+        }
+      }
+    } catch (error) {
+      setRedeemStatus({ message: "Failed to redeem code. Please try again.", isError: true });
+    } finally {
+      setIsRedeeming(false);
+    }
+  };
   const formatChessTokens = (amount: number) => {
     if (amount === undefined || amount === null) return '$0';
     if (amount >= 1_000_000_000) return `$${(amount / 1_000_000_000).toLocaleString('en-US', { maximumFractionDigits: 2 })}B`;
@@ -365,6 +396,37 @@ export default function LamboLottery({ isOpen, onClose, userFid, onPurchaseSucce
             <div className="flex-1 flex items-center justify-center"><div className="text-cyan-400 text-2xl font-bold animate-pulse">Loading lottery...</div></div>
           ) : (
             <div className="relative z-10 flex-1 overflow-y-auto space-y-6">
+              {/* Daily Code Section */}
+              <div className="bg-[#23283a] rounded-xl p-4 border border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+                <h3 className="text-lg font-bold text-yellow-400 mb-2 flex items-center justify-center gap-2">
+                  <FiGift /> Daily Free Numbers
+                </h3>
+                <p className="text-xs text-gray-400 text-center mb-4">
+                  Enter today's code to get 3 free tickets! (Must be subscribed to notifications)
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={dailyCode}
+                    onChange={(e) => setDailyCode(e.target.value.toUpperCase())}
+                    placeholder="ENTER CODE..."
+                    className="flex-1 bg-black/40 border border-yellow-500/30 rounded-lg px-4 py-2 text-white font-mono focus:outline-none focus:border-yellow-500 transition-colors"
+                  />
+                  <button
+                    onClick={handleRedeemCode}
+                    disabled={isRedeeming || !dailyCode}
+                    className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 disabled:from-gray-700 disabled:to-gray-800 text-white font-bold px-6 py-2 rounded-lg transition-all duration-300"
+                  >
+                    {isRedeeming ? '...' : 'REDEEM'}
+                  </button>
+                </div>
+                {redeemStatus && (
+                  <div className={`mt-3 p-2 rounded text-center text-sm font-medium ${redeemStatus.isError ? 'bg-red-900/40 text-red-300' : 'bg-green-900/40 text-green-300'}`}>
+                    {redeemStatus.message}
+                  </div>
+                )}
+              </div>
+
               <div className="bg-[#23283a] rounded-xl p-4 border border-[#a64d79] pulse-glow">
                 <h3 className="text-xl font-bold text-cyan-400 mb-4 flex items-center justify-center gap-2"><FiZap /> Select Numbers (1-100)</h3>
                 <div className="mb-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
