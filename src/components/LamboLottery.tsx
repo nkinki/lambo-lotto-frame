@@ -28,17 +28,7 @@ enum PurchaseStep {
 }
 
 export default function LamboLottery({ isOpen, onClose, userFid, onPurchaseSuccess }: LamboLotteryProps) {
-  const { address, isConnected } = useAccount();
-
-  // Safely get chainId to avoid connector errors
-  let chainId: number | undefined;
-  try {
-    const accountData = useAccount();
-    chainId = accountData.chainId;
-  } catch (error) {
-    console.warn('Could not get chainId:', error);
-    chainId = undefined;
-  }
+  const { address, isConnected, chainId } = useAccount();
 
   // Pontosan mint a PaymentForm.tsx-ben, csak a useWriteContract-ot használjuk
   const { writeContractAsync, isPending } = useWriteContract();
@@ -156,22 +146,6 @@ export default function LamboLottery({ isOpen, onClose, userFid, onPurchaseSucce
 
   useEffect(() => { if (isOpen) { fetchLotteryData(); } }, [isOpen, fetchLotteryData]);
 
-  // Prompt user to add to favorites and enable notifications on first open
-  useEffect(() => {
-    const hasPrompted = localStorage.getItem('lambo-lotto-prompted');
-    if (!hasPrompted && isOpen) {
-      // Wait a bit for the UI to load before showing prompt
-      setTimeout(async () => {
-        try {
-          await sdk.actions.addMiniApp();
-          localStorage.setItem('lambo-lotto-prompted', 'true');
-        } catch (error) {
-          console.log('User declined to add miniapp:', error);
-          localStorage.setItem('lambo-lotto-prompted', 'true');
-        }
-      }, 1500);
-    }
-  }, [isOpen]);
 
   useEffect(() => {
     const updateTimer = () => {
@@ -405,6 +379,17 @@ export default function LamboLottery({ isOpen, onClose, userFid, onPurchaseSucce
             <div className="flex-1 flex items-center justify-center"><div className="text-cyan-400 text-2xl font-bold animate-pulse">Loading lottery...</div></div>
           ) : (
             <div className="relative z-10 flex-1 overflow-y-auto space-y-6">
+              {/* Buy CHESS Action Button (High visibility) */}
+              <div className="flex justify-center pt-2">
+                <button
+                  onClick={() => sdk.actions.openUrl("https://farcaster.xyz/miniapps/DXCz8KIyfsme/farchess")}
+                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 border-2 border-purple-400/50 rounded-2xl text-white text-xl font-black transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-[0_0_20px_rgba(168,85,247,0.4)] animate-pulse"
+                >
+                  <FiZap size={24} className="text-yellow-400" />
+                  SWITCH TO FARCHESS (BUY $CHESS) ♟️
+                </button>
+              </div>
+
               {/* Daily Code Section */}
               <div className="bg-[#23283a] rounded-xl p-4 border border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.2)]">
                 <h3 className="text-lg font-bold text-yellow-400 mb-2 flex items-center justify-center gap-2">
@@ -424,7 +409,7 @@ export default function LamboLottery({ isOpen, onClose, userFid, onPurchaseSucce
                   <button
                     onClick={handleRedeemCode}
                     disabled={isRedeeming || !dailyCode}
-                    className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 disabled:from-gray-700 disabled:to-gray-800 text-white font-bold px-6 py-2 rounded-lg transition-all duration-300"
+                    className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 disabled:from-gray-700 disabled:to-gray-800 text-white font-bold px-2 py-2 rounded-lg transition-all duration-300"
                   >
                     {isRedeeming ? '...' : 'REDEEM'}
                   </button>
@@ -555,14 +540,6 @@ export default function LamboLottery({ isOpen, onClose, userFid, onPurchaseSucce
           )}
         </div>
       </div>
-      <style jsx>{`
-        @keyframes pulseGlow {
-          0% { box-shadow: 0 0 4px #a259ff, 0 0 8px #a259ff, 0 0 16px #a259ff; }
-          50% { box-shadow: 0 0 8px #a259ff, 0 0 16px #a259ff, 0 0 24px #a259ff; }
-          100% { box-shadow: 0 0 4px #a259ff, 0 0 8px #a259ff, 0 0 16px #a259ff; }
-        }
-        .pulse-glow { animation: pulseGlow 3.5s ease-in-out infinite; border: 2px solid #a259ff; }
-      `}</style>
     </>
   );
 }

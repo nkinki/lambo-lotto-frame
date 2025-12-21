@@ -10,10 +10,28 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  @keyframes pulseGlow {
+    0% {
+      box-shadow: 0 0 4px #a259ff, 0 0 8px #a259ff, 0 0 16px #a259ff;
+    }
+
+    50% {
+      box-shadow: 0 0 8px #a259ff, 0 0 16px #a259ff, 0 0 24px #a259ff;
+    }
+
+    100% {
+      box-shadow: 0 0 4px #a259ff, 0 0 8px #a259ff, 0 0 16px #a259ff;
+    }
+  }
+
+  .pulse-glow {
+    animation: pulseGlow 3.5s ease-in-out infinite;
+    border: 2px solid #a259ff;
+  }
 }
